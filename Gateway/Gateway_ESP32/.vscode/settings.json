@@ -1,0 +1,16 @@
+{
+    "files.associations": {
+        "screen_lcd.h": "c",
+        "global.h": "c",
+        "wifi_controller.h": "c",
+        "mqtt_server.h": "c",
+        "fsm.h": "c",
+        "uart.h": "c",
+        "lcd_i2c.h": "c",
+        "webserver.h": "c",
+        "pubsubclient.h": "c",
+        "wifi.h": "c",
+        "functional": "cpp",
+        "wire.h": "c"
+    }
+}

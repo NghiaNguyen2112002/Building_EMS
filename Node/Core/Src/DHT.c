@@ -6,8 +6,6 @@
  */
 
 
-
-
 #include "DHT.h"
 
 void Delay_us(DHT_Name* DHT, uint16_t duration){

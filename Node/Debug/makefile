@@ -52,6 +52,9 @@ default.size.stdout \
 OBJDUMP_LIST += \
 Node_Sensor.list \
 
+OBJCOPY_HEX += \
+Node_Sensor.hex \
+
 
 # All Target
 all: main-build
@@ -60,8 +63,8 @@ all: main-build
 main-build: Node_Sensor.elf secondary-outputs
 
 # Tool invocations
-Node_Sensor.elf Node_Sensor.map: $(OBJS) $(USER_OBJS) E:\Hired\ Project\IOT_Building\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Node_Sensor.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\Hired Project\IOT_Building\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Node_Sensor.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Node_Sensor.elf Node_Sensor.map: $(OBJS) $(USER_OBJS) E:\Hired\ Project\IOT_Building\Node\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Node_Sensor.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\Hired Project\IOT_Building\Node\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Node_Sensor.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -75,12 +78,17 @@ Node_Sensor.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+Node_Sensor.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "Node_Sensor.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) Node_Sensor.elf Node_Sensor.list Node_Sensor.map default.size.stdout
+	-$(RM) Node_Sensor.elf Node_Sensor.hex Node_Sensor.list Node_Sensor.map default.size.stdout
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

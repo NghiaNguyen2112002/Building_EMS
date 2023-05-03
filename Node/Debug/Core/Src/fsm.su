@@ -1,0 +1,2 @@
+../Core/Src/fsm.c:13:6:FSM_Init	4	static
+../Core/Src/fsm.c:16:6:FSM_SystemControl	4	static
