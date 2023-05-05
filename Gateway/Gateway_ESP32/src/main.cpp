@@ -21,6 +21,7 @@ unsigned long time_now = 0;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(SERIAL_DEBUG_BAUD);
+  Serial.setTxBufferSize(256);
 
   EEPROM.begin(512);
   IN_Init();
