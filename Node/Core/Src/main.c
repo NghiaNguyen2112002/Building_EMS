@@ -26,8 +26,8 @@
 #include "global.h"
 #include "input.h"
 #include "lcd_i2c.h"
-#include "uart.h"
 #include "fsm.h"
+#include "zigbee.h"
 
 /* USER CODE END Includes */
 
@@ -55,6 +55,8 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 
 UART_HandleTypeDef huart1;
+DMA_HandleTypeDef hdma_usart1_rx;
+DMA_HandleTypeDef hdma_usart1_tx;
 
 /* USER CODE BEGIN PV */
 
@@ -117,15 +119,15 @@ int main(void)
   HAL_TIM_Base_Start(&htim3);
 
   TM_Init(&htim2);
-  TM_SetTime_ms(2000);
+  TM_SetTime_ms(3000);
 
   IN_Init(&hadc1);
-//  DHT_Init(&_dht0, DHT0_GPIO_Port, DHT0_Pin, &htim3);
-//  DHT_Init(&_dht1, DHT1_GPIO_Port, DHT1_Pin, &htim3);
-//  DHT_Init(&_dht2, DHT2_GPIO_Port, DHT2_Pin, &htim3);
-//  DHT_Init(&_dht3, DHT3_GPIO_Port, DHT3_Pin, &htim3);
+  DHT_Init(&_dht0, DHT0_GPIO_Port, DHT0_Pin, &htim3);
+  DHT_Init(&_dht1, DHT1_GPIO_Port, DHT1_Pin, &htim3);
+  DHT_Init(&_dht2, DHT2_GPIO_Port, DHT2_Pin, &htim3);
+  DHT_Init(&_dht3, DHT3_GPIO_Port, DHT3_Pin, &htim3);
 
-  UART_Init(&huart1);
+  ZB_Init(&huart1);
 
   CLCD_Init(&hi2c1, 0x27, 2, 16);
 
@@ -141,11 +143,12 @@ int main(void)
 
 		  CLCD_ClearBuffer();
 
-		  UART_SendMsg("asdasdad", 8);
 //		  DHT_Read(&_dht0);
 //		  x = DHT_GetHumi(&_dht0);
-		  CLCD_PrintNumBuffer(0, 0, IN_GetValue_MP2());
-		  CLCD_PrintNumBuffer(1, 0, IN_GetValue_MQ2());
+
+//		  CLCD_PrintNumBuffer(0, 0, IN_GetValue_MP2());
+//		  CLCD_PrintNumBuffer(1, 0, IN_GetValue_MQ2());
+		  FSM_SystemControl();
 
 		  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 
@@ -428,6 +431,12 @@ static void MX_DMA_Init(void)
   /* DMA1_Channel1_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
+  /* DMA1_Channel4_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel4_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel4_IRQn);
+  /* DMA1_Channel5_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
 
 }
 

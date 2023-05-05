@@ -6,4 +6,4 @@
 ../Core/Src/DHT.c:46:6:DHT_Init	24	static
 ../Core/Src/DHT.c:58:6:DHT_Read	40	static
 ../Core/Src/DHT.c:115:7:DHT_GetTemp	16	static
-../Core/Src/DHT.c:119:7:DHT_GetHumi	16	static
+../Core/Src/DHT.c:120:7:DHT_GetHumi	16	static

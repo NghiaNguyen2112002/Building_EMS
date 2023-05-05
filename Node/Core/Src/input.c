@@ -19,10 +19,10 @@ void IN_Init(ADC_HandleTypeDef* hadc){
 }
 
 
-uint16_t IN_GetValue_MQ2(void){
+uint16_t IN_GetValue_Gas(void){
 	return ADC_value[1];
 }
 
-uint16_t IN_GetValue_MP2(void){
+uint16_t IN_GetValue_Smoke(void){
 	return ADC_value[0];
 }

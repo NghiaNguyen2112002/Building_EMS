@@ -15,7 +15,7 @@
 
 void IN_Init(ADC_HandleTypeDef* hadc);
 //void IN_ReadADC(void);
-uint16_t IN_GetValue_MQ2(void);
-uint16_t IN_GetValue_MP2(void);
+uint16_t IN_GetValue_Gas(void);
+uint16_t IN_GetValue_Smoke(void);
 
 #endif /* INC_INPUT_H_ */

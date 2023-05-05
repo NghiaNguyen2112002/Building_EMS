@@ -6,7 +6,7 @@
  */
 
 
-#include "uart.h"
+#include "zigbee.h"
 
 UART_HandleTypeDef* uart_zigbee;
 
@@ -19,19 +19,21 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 }
 
 //==================HIGH LEVEL FUNCTION==================//
-void UART_Init(UART_HandleTypeDef* huart){
+void ZB_Init(UART_HandleTypeDef* huart){
 	uart_zigbee = huart;
 
 }
 
-void UART_SendMsg(uint8_t* msg, uint8_t length){
-	HAL_UART_Transmit(uart_zigbee, msg, length, 1000);
+void ZB_SendMsg_DMA(char* msg, uint8_t length){
+	HAL_UART_Transmit_DMA(uart_zigbee, msg, length);
 }
 
-uint8_t UART_IsReceivedMsg(void){
+uint8_t ZB_IsReceivedMsg(void){
 
+	return 0;
 }
 
-uint8_t* UART_GetMsg(void){
+uint8_t* ZB_GetMsg(void){
 
+	return NULL;
 }

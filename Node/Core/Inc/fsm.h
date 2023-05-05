@@ -8,11 +8,17 @@
 #ifndef INC_FSM_H_
 #define INC_FSM_H_
 
+#include <string.h>
+#include <stdio.h>
+#include <stdint.h>
+
 #include "input.h"
 #include "DHT.h"
 #include "global.h"
 #include "stm32f1xx_hal.h"
 #include "main.h"
+#include "zigbee.h"
+#include "lcd_i2c.h"
 
 //==================MODE FSM SYSTEM CONTROL==================//
 #define INIT						0
