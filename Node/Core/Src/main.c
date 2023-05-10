@@ -38,6 +38,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -122,6 +123,8 @@ int main(void)
   TM_SetTime_ms(3000);
 
   IN_Init(&hadc1);
+
+
   DHT_Init(&_dht0, DHT0_GPIO_Port, DHT0_Pin, &htim3);
   DHT_Init(&_dht1, DHT1_GPIO_Port, DHT1_Pin, &htim3);
   DHT_Init(&_dht2, DHT2_GPIO_Port, DHT2_Pin, &htim3);
@@ -131,6 +134,7 @@ int main(void)
 
   CLCD_Init(&hi2c1, 0x27, 2, 16);
 
+  FSM_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -144,10 +148,19 @@ int main(void)
 		  CLCD_ClearBuffer();
 
 //		  DHT_Read(&_dht0);
+//		  DHT_Read(&_dht1);
+//
+//		  CLCD_PrintFloatBuffer(0, 0, DHT_GetHumi(&_dht0));
+//		  CLCD_PrintFloatBuffer(1, 0, DHT_GetTemp(&_dht0));
+//
+//		  CLCD_PrintFloatBuffer(0, 8, DHT_GetHumi(&_dht1));
+//		  CLCD_PrintFloatBuffer(1, 8, DHT_GetTemp(&_dht1));
+
 //		  x = DHT_GetHumi(&_dht0);
 
 //		  CLCD_PrintNumBuffer(0, 0, IN_GetValue_MP2());
 //		  CLCD_PrintNumBuffer(1, 0, IN_GetValue_MQ2());
+
 		  FSM_SystemControl();
 
 		  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
@@ -175,10 +188,13 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL2;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -188,9 +204,9 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
@@ -198,7 +214,7 @@ void SystemClock_Config(void)
     Error_Handler();
   }
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
-  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV2;
+  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
@@ -227,7 +243,7 @@ static void MX_ADC1_Init(void)
   */
   hadc1.Instance = ADC1;
   hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
-  hadc1.Init.ContinuousConvMode = ENABLE;
+  hadc1.Init.ContinuousConvMode = DISABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
@@ -314,7 +330,7 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 8000 - 1;
+  htim2.Init.Prescaler = 16000 - 1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim2.Init.Period = 50 - 1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -359,7 +375,7 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 8 - 1;
+  htim3.Init.Prescaler = 16 - 1;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim3.Init.Period = 0xFFFF - 1;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -478,7 +494,13 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+//void USARTx_DMA_TX_IRQHandler(void){
+//	HAL_DMA_IRQHandler(&hdma_usart1_tx);
+//}
+//
+//void USARTx_IRQHandler(void){
+//	HAL_UART_IRQHandler(&huart1);
+//}
 /* USER CODE END 4 */
 
 /**

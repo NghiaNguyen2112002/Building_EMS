@@ -4,7 +4,7 @@ WiFiClient espClient = WiFiClient();
 PubSubClient client(espClient);
 
 uint8_t flag_received_msg_from_sv;
-String msg;
+static String msg;
 
 void on_message(const char* topic, byte* payload, unsigned int length);
 

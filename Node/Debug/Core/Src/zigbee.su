@@ -1,5 +1,6 @@
 ../Core/Src/zigbee.c:14:6:HAL_UART_RxCpltCallback	16	static
 ../Core/Src/zigbee.c:22:6:ZB_Init	16	static
-../Core/Src/zigbee.c:27:6:ZB_SendMsg	16	static
-../Core/Src/zigbee.c:31:9:ZB_IsReceivedMsg	4	static
-../Core/Src/zigbee.c:36:10:ZB_GetMsg	4	static
+../Core/Src/zigbee.c:27:6:ZB_SendMsg	24	static
+../Core/Src/zigbee.c:40:6:ZB_SendMsg_DMA	16	static
+../Core/Src/zigbee.c:49:9:ZB_IsReceivedMsg	4	static
+../Core/Src/zigbee.c:54:10:ZB_GetMsg	4	static

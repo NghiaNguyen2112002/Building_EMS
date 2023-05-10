@@ -10,6 +10,9 @@
 
 #include "stm32f1xx_hal.h"
 #include "main.h"
+#include "lcd_i2c.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct{
 	GPIO_TypeDef* 			DHT_port;

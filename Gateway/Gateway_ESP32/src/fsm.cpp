@@ -232,13 +232,13 @@ void FSM_SystemControl(void){
 		break;
 	case SYS_PROCESS_DATA:		
 		if(ZB_IsReceivedMsg()){
-			Serial.println("Received: ");
-			Serial.println((char*)ZB_GetMsg().c_str());
+			// Serial.println("Received: ");
+			// Serial.println((char*)ZB_GetMsg().c_str());
 
 			DecodeDataJsonStr((char*)ZB_GetMsg().c_str());
 
 			if(SV_IsConnected()){
-				Serial.println("Sending to Server: ");
+				// Serial.println("Sending to Server: ");
 				SV_SendData(CHANNEL_DATA, (char*)ZB_GetMsg().c_str());
 			}
 			else SV_Connect();

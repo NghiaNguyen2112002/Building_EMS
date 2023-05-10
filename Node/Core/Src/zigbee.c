@@ -24,8 +24,26 @@ void ZB_Init(UART_HandleTypeDef* huart){
 
 }
 
+void ZB_SendMsg(char* msg, uint8_t length){
+	uint8_t i;
+	for(i = 0; i < length; i++){
+		HAL_UART_Transmit(uart_zigbee, msg + i, 1, 100);
+
+	}
+
+
+//	HAL_UART_Transmit(uart_zigbee, (uint8_t*)msg, length, 2000);
+
+
+}
+
 void ZB_SendMsg_DMA(char* msg, uint8_t length){
-	HAL_UART_Transmit_DMA(uart_zigbee, msg, length);
+
+	if(HAL_UART_Transmit_DMA(uart_zigbee, (uint8_t*)msg, length) == HAL_BUSY){
+//		HAL_UART_DMAStop(uart_zigbee);
+
+		CLCD_PrintStringBuffer(1, 0, "BUSY");
+	}
 }
 
 uint8_t ZB_IsReceivedMsg(void){
@@ -37,3 +55,5 @@ uint8_t* ZB_GetMsg(void){
 
 	return NULL;
 }
+
+

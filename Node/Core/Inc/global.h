@@ -11,7 +11,7 @@
 #include "DHT.h"
 
 
-#define NODE_ID				0
+#define NODE_ID				1
 
 
 typedef struct Data_Pack{

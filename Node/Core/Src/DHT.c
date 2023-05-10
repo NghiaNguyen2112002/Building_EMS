@@ -68,6 +68,8 @@ void DHT_Read(DHT_Name* DHT){
 	data[4] SUM
 */
 
+	DHT->humi = DHT->temp = 0;
+
 	SetPinOut(DHT);
 	WritePin(DHT, 0);
 	HAL_Delay(20);
@@ -114,11 +116,13 @@ void DHT_Read(DHT_Name* DHT){
 
 float DHT_GetTemp(DHT_Name* DHT){
 	return 30.4;
+	return random()%100 + random()%10 / 10.0;
 	return DHT->temp;
 }
 
 float DHT_GetHumi(DHT_Name* DHT){
-	return 50.1;
+	return 50.4;
+	return random()%100 + random()%10 / 10.0;
 	return DHT->humi;
 }
 

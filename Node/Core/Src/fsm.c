@@ -8,19 +8,16 @@
 #include "fsm.h"
 
 uint8_t mode;
-char json_str[200] = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+char json_str[200];
 
 
 uint8_t ConvertToJsonString(void){
-
-//	return sprintf(json_str,
-//			"{\"ID\":%u,\"TEMP0\":%0.1f,\"HUMI0\":%0.1f,\"TEMP1\":%0.1f,\"HUMI1\":%0.1f,"
-//			"\"TEMP2\":%0.1f,\"HUMI2\":%0.1f,\"TEMP3\":%0.1f,\"HUMI3\":%0.1f,"
-//			"\"GAS\":%u,\"SMOKE\":%u}",
-//				NODE_ID, _data.temp_0, _data.humid_0, _data.temp_1, _data.humid_1,
-//				_data.temp_2, _data.humid_2, _data.temp_3, _data.humid_3,
-//				_data.gas, _data.smoke);
-
+	return sprintf(json_str, "{\"ID\":%u,\"TEMP0\":%0.1f,\"HUMI0\":%0.1f,\"TEMP1\":%0.1f,\"HUMI1\":%0.1f,"
+										"\"TEMP2\":%0.1f,\"HUMI2\":%0.1f,\"TEMP3\":%0.1f,\"HUMI3\":%0.1f,"
+										"\"GAS\":%u,\"SMOKE\":%u}#",
+										NODE_ID, _data.temp_0, _data.humid_0, _data.temp_1, _data.humid_1,
+										_data.temp_2, _data.humid_2, _data.temp_3, _data.humid_3,
+										_data.gas, _data.smoke);
 }
 
 
@@ -31,6 +28,7 @@ void FSM_Init(void){
 void FSM_SystemControl(void){
 	switch(mode){
 	case INIT:
+
 //		_time_read_data = TIME_READ_DATA;
 		mode = IDLING;
 		break;
@@ -67,9 +65,10 @@ void FSM_SystemControl(void){
 	case SEND_DATA:
 		CLCD_PrintStringBuffer(0, 0, "SEND DATA");
 
-		ZB_SendMsg(json_str, 150);
 
-//		ZB_SendMsg(json_str, ConvertToJsonString());
+//		ZB_SendMsg_DMA(json_str, 132);
+
+		ZB_SendMsg(json_str, ConvertToJsonString());
 
 //		_time_read_data = TIME_READ_DATA;
 		mode = IDLING;
