@@ -20,7 +20,6 @@
 
 void ZB_Init(UART_HandleTypeDef* huart);
 void ZB_SendMsg(char* msg, uint8_t length);
-void ZB_SendMsg_DMA(char* msg, uint8_t length);
 uint8_t ZB_IsReceivedMsg(void);
 uint8_t* ZB_GetMsg(void);
 

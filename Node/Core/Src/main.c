@@ -56,8 +56,6 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 
 UART_HandleTypeDef huart1;
-DMA_HandleTypeDef hdma_usart1_rx;
-DMA_HandleTypeDef hdma_usart1_tx;
 
 /* USER CODE BEGIN PV */
 
@@ -125,10 +123,7 @@ int main(void)
   IN_Init(&hadc1);
 
 
-  DHT_Init(&_dht0, DHT0_GPIO_Port, DHT0_Pin, &htim3);
-  DHT_Init(&_dht1, DHT1_GPIO_Port, DHT1_Pin, &htim3);
-  DHT_Init(&_dht2, DHT2_GPIO_Port, DHT2_Pin, &htim3);
-  DHT_Init(&_dht3, DHT3_GPIO_Port, DHT3_Pin, &htim3);
+  DHT_Init(&_dht, DHT_GPIO_Port, DHT_Pin, &htim3);
 
   ZB_Init(&huart1);
 
@@ -447,12 +442,6 @@ static void MX_DMA_Init(void)
   /* DMA1_Channel1_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
-  /* DMA1_Channel4_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel4_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel4_IRQn);
-  /* DMA1_Channel5_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
 
 }
 
@@ -475,7 +464,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, DHT0_Pin|DHT1_Pin|DHT2_Pin|DHT3_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(DHT_GPIO_Port, DHT_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : LED_Pin */
   GPIO_InitStruct.Pin = LED_Pin;
@@ -484,12 +473,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LED_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : DHT0_Pin DHT1_Pin DHT2_Pin DHT3_Pin */
-  GPIO_InitStruct.Pin = DHT0_Pin|DHT1_Pin|DHT2_Pin|DHT3_Pin;
+  /*Configure GPIO pin : DHT_Pin */
+  GPIO_InitStruct.Pin = DHT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(DHT_GPIO_Port, &GPIO_InitStruct);
 
 }
 

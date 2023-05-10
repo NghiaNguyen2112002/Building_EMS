@@ -63,14 +63,8 @@ void Error_Handler(void);
 #define GAS_GPIO_Port GPIOA
 #define SMOKE_Pin GPIO_PIN_1
 #define SMOKE_GPIO_Port GPIOA
-#define DHT0_Pin GPIO_PIN_3
-#define DHT0_GPIO_Port GPIOA
-#define DHT1_Pin GPIO_PIN_4
-#define DHT1_GPIO_Port GPIOA
-#define DHT2_Pin GPIO_PIN_5
-#define DHT2_GPIO_Port GPIOA
-#define DHT3_Pin GPIO_PIN_6
-#define DHT3_GPIO_Port GPIOA
+#define DHT_Pin GPIO_PIN_3
+#define DHT_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 

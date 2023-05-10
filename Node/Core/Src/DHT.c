@@ -115,14 +115,14 @@ void DHT_Read(DHT_Name* DHT){
 }
 
 float DHT_GetTemp(DHT_Name* DHT){
-	return 30.4;
-	return random()%100 + random()%10 / 10.0;
+//	return 30.4;
+//	return random()%100 + random()%10 / 10.0;
 	return DHT->temp;
 }
 
 float DHT_GetHumi(DHT_Name* DHT){
-	return 50.4;
-	return random()%100 + random()%10 / 10.0;
+//	return 50.4;
+//	return random()%100 + random()%10 / 10.0;
 	return DHT->humi;
 }
 

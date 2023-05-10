@@ -10,14 +10,8 @@
 
 typedef struct Data_Pack{
     uint8_t node_id;
-    float temp_0;
-    float humid_0;
-    float temp_1;
-    float humid_1;
-    float temp_2;
-    float humid_2;
-    float temp_3;
-    float humid_3;
+    float temp;
+    float humid;
     uint16_t gas;
     uint16_t smoke; 
 
@@ -25,10 +19,7 @@ typedef struct Data_Pack{
 
     Data_Pack(){
         node_id = 0;
-        temp_0 = humid_0 = 0;
-        temp_1 = humid_1 = 0;
-        temp_2 = humid_2 = 0;
-        temp_3 = humid_3 = 0;
+        temp = humid = 0;
         gas = 0;
         smoke = 0;
         is_connected = 0;

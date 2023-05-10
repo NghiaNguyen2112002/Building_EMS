@@ -8,24 +8,19 @@ void DecodeDataJsonStr(char* json_str){
 	char* token;
 
 /*
-	{"ID":0,"TEMP0":30.4,"HUMI0":50.4,"TEMP1":31.4,"HUMI1":51.4,
-		"TEMP2":32.4,"HUMI2":52.4,"TEMP3":33.4,"HUMI3":53.4,
-		"GAS":40,"SMOKE":30}
+	"{"ID":0,"TEMP":30.4,"HUMI":50.4,"GAS":40,"SMOKE":30}"
 
-	0  	"ID"					14	"TEMP3"
-	1   0						15	33.4
-	2  	"TEMP0"					16	"HUMI3"
-	3 	30.4					17	53.4
-	4  	"HUMI0"					18	"GAS"
-	5  	50.4					19	40
-	6	"TEMP1"					20	"SMOKE"
-	7	31.4					21	30
-	8	"HUMI1"
-	9	51.4
-	10	"TEMP2"
-	11	32.4
-	12	"HUMI2"
-	13	52.4
+	0  	"ID"					
+	1   0						
+	2  	"TEMP0"				
+	3 	30.4					
+	4  	"HUMI0"					
+	5  	50.4				
+	6	"GAS"
+	7	40
+	8	"SMOKE"
+	9	30
+
 */
 	token = strtok(json_str, ":,{}");
 
@@ -35,20 +30,10 @@ void DecodeDataJsonStr(char* json_str){
 			_data_node[node_id].node_id = node_id;
 			_data_node[node_id].is_connected = 1;
 		}
-		else if(i == 3) _data_node[node_id].temp_0 = atoff(token);
-		else if(i == 5) _data_node[node_id].humid_0 = atoff(token);
-
-		else if(i == 7) _data_node[node_id].temp_1 = atoff(token);
-		else if(i == 9) _data_node[node_id].humid_1 = atoff(token);
-
-		else if(i == 11) _data_node[node_id].temp_2 = atoff(token);
-		else if(i == 13) _data_node[node_id].humid_2 = atoff(token);
-
-		else if(i == 15) _data_node[node_id].temp_3 = atoff(token);
-		else if(i == 17) _data_node[node_id].humid_3 = atoff(token);
-
-		else if(i == 19) _data_node[node_id].gas = atoi(token);
-		else if(i == 21) _data_node[node_id].smoke = atoi(token);
+		else if(i == 3) _data_node[node_id].temp = atoff(token);
+		else if(i == 5) _data_node[node_id].humid = atoff(token);
+		else if(i == 7) _data_node[node_id].gas = atoi(token);
+		else if(i == 7) _data_node[node_id].smoke = atoi(token);
 
 		token = strtok(NULL, ":,{}");
 	}

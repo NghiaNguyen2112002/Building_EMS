@@ -7,12 +7,9 @@
 
 #include "global.h"
 
-Data_Pack _data = {NODE_ID, 0, 0, 0, 0,
-							0, 0, 0, 0,
-							0, 0
-					};
+Data_Pack _data = {NODE_ID, 0, 0, 0, 0};
 
-DHT_Name _dht0, _dht1, _dht2, _dht3;
+DHT_Name _dht;
 
 
 uint16_t _time_read_data = 0;
