@@ -4,6 +4,7 @@
 #include "Arduino.h"
 #include "SoftwareSerial.h"
 #include "pin.h"
+#include <string.h>
 
 
 void ZB_Init(uint8_t pin_rx, uint8_t pin_tx);

@@ -13,6 +13,10 @@ void SV_Init(void){
   client.setCallback(on_message);
 }
 
+
+void SV_Disconnect(void){
+    client.disconnect();
+}
 void SV_Connect(void){
     if ( !client.connected() ) {
       Serial.print("Connecting to Server ...");
@@ -27,6 +31,7 @@ void SV_Connect(void){
         Serial.println(client.state() );
       }
     }
+    else Serial.println("Server connected");
 }
 
 bool SV_IsConnected(void){
@@ -39,7 +44,7 @@ void SV_ClientLoop(void){
 
 
 void SV_SendData(char* channel, char* json_string){
-  Serial.println(json_string);
+  Serial.print("Send: "); Serial.println(json_string);
 
   client.publish(channel, json_string);
 }

@@ -39,7 +39,7 @@ extern String _wifi_name, _wifi_pass;
 extern String _cmd;
 extern bool _flag_config_success, _flag_received_cmd_from_sv;
 
-extern uint16_t _time_screen;
-
+extern uint16_t _time_screen,  _time_out_sleep,
+                _time_reconnect;
 extern uint16_t _counter_time_elapsed;
 #endif

@@ -11,7 +11,7 @@
 #include "stm32f1xx_hal.h"
 #include "main.h"
 
-void TM_Init(TIM_HandleTypeDef* htim);
+void TM_Init(TIM_HandleTypeDef* htim, uint16_t cycles);
 void TM_SetTime_ms(uint16_t duration);
 uint8_t TM_IsFlag(void);
 

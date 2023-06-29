@@ -21,6 +21,7 @@
 #define CHANNEL_COMMAND                          "building_cmd"
 
 void SV_Init(void);
+void SV_Disconnect(void);
 void SV_Connect(void);
 bool SV_IsConnected(void);
 void SV_SendData(char* channel, char* json_string);

@@ -149,6 +149,11 @@ void FSM_LcdDisplay(void){
 void FSM_SystemControl(void){
 	switch(mode_sys){
 	case INIT:
+		CLCD_TurnBackLight(1);
+		Serial.println("Wakeup");
+
+		WF_Disconnect();
+
 //      READ WIFI NAME + WIFI PASS FROM  EEPROM
         if (EEPROM.read(0) != 0) {      
         	_wifi_name = "";
@@ -167,17 +172,40 @@ void FSM_SystemControl(void){
 		Serial.print("Connecting to WF: ");
 		Serial.println(_wifi_name + "  " + _wifi_pass);
 		
-		WF_Connect(_wifi_name, _wifi_pass);
+		// WF_Connect(_wifi_name, _wifi_pass);
 
 		mode_sys = SYS_CONNECT_WF;
 		break;
 	case SYS_CONNECT_WF:
+		if(_time_reconnect < 5){
+			_time_reconnect = TIME_RECONNECT;
+			WF_Connect(_wifi_name, _wifi_pass);
+		}
+
 		if(WF_IsConnected()) {
+			SV_Disconnect();
+
 			Serial.println("Connect Wifi successful!");
-
+			mode_sys = SYS_CONNECT_SV;
+		}
+		else if(IN_IsPressed_ms(BT0, 2000)){
+			WF_Disconnect();
+			WF_CreateWebserver();
+			Serial.println("Begin config Wifi");
+			mode_sys = SYS_CONFIG_WF;
+		}
+		break;
+	case SYS_CONNECT_SV:
+		if(_time_reconnect < 5){
+			_time_reconnect = TIME_RECONNECT;
 			SV_Connect();
-
+		}
+		if(SV_IsConnected()){
+			Serial.println("Connect Server successful!");
 			mode_sys = SYS_PROCESS_DATA;
+		}
+		else if(!WF_IsConnected()){
+			mode_sys = SYS_CONNECT_WF;
 		}
 		else if(IN_IsPressed_ms(BT0, 2000)){
 			WF_Disconnect();
@@ -214,20 +242,28 @@ void FSM_SystemControl(void){
 
 			mode_sys = SYS_CONNECT_WF;
 		}
+		else if(IN_IsPressed(BT0)){
+			mode_sys = INIT;
+		}
 		break;
 	case SYS_PROCESS_DATA:		
 		if(ZB_IsReceivedMsg()){
 			// Serial.println("Received: ");
 			// Serial.println((char*)ZB_GetMsg().c_str());
 
+			_time_out_sleep = 500;
+
 			DecodeDataJsonStr((char*)ZB_GetMsg().c_str());
 
+			SV_Connect();
+
 			if(SV_IsConnected()){
-				// Serial.println("Sending to Server: ");
+				Serial.println("Sending to Server: ");
 				SV_SendData(CHANNEL_DATA, (char*)ZB_GetMsg().c_str());
 			}
-			else SV_Connect();
-		}
+				
+			
+		}	
 		
 		if(WF_IsConnected() == false){
 			Serial.print("Connecting to WF: ");
@@ -243,8 +279,24 @@ void FSM_SystemControl(void){
 			Serial.println("Begin config Wifi");
 			mode_sys = SYS_CONFIG_WF;
 		}
-
+		else if((!IN_IsHeld(SW_WAKEUP)) && (_time_out_sleep < 5)){
+			mode_sys = SYS_SLEEP;
+		}
 		break;
+
+	case SYS_SLEEP:
+		
+		// Serial.println(Serial.readStringUntil('#'));
+				
+		Serial.println("Sleep");
+		CLCD_TurnBackLight(0);
+		CLCD_DisplayScreen();
+		esp_light_sleep_start();
+		mode_sys = INIT;
+		
+		break;
+
+
 	default:
 		mode_sys = INIT;
 	}

@@ -251,7 +251,11 @@ void CLCD_DisplayScreen(void){
 
 
 void CLCD_TurnBackLight(uint8_t isOn){
-	LCD.BACKLIGHT = LCD_NOBACKLIGHT;
+	if(isOn == 0){
+		LCD.BACKLIGHT = LCD_NOBACKLIGHT;
+	}
+	else LCD.BACKLIGHT = LCD_BACKLIGHT;
+	
 }
 
 //=============CUSTOM CHAR=============//

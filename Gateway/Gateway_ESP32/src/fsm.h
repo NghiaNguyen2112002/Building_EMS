@@ -35,11 +35,12 @@
 #define SYS_CONNECT_WF				1
 #define SYS_CONFIG_WF				2
 #define SYS_PROCESS_DATA			3
-
+#define SYS_SLEEP                   4
+#define SYS_CONNECT_SV              5
 
 //==================TIME==================//
 #define TIME_SCREEN						500
-
+#define TIME_RECONNECT                  100             //reconnect wifi, server every 1s if not connected
 //==================MSG FROM ESP==================//
 #define ONRELAY							"ONRELAY"
 #define OFFRELAY						"OFFRELAY"

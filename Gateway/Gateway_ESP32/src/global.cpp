@@ -14,6 +14,7 @@ bool _flag_config_success = false;
 
 bool _flag_received_cmd_from_sv = false;
 
-uint16_t _time_screen = 0;
+uint16_t _time_screen = 0, _time_out_sleep = 0,
+            _time_reconnect = 0;
 
 uint16_t _counter_time_elapsed = 0;

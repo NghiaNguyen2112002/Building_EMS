@@ -10,11 +10,11 @@
 
 TIM_HandleTypeDef *stimer;
 
-static uint8_t	TIME_CYCLE 		= 50;
+static uint16_t	TIME_CYCLE 		= 1;
 
 static uint8_t MUL_timer		= 1;
 static uint8_t flag_timer		= 0;
-static uint8_t counter_timer 	= 0;
+static uint16_t counter_timer 	= 0;
 
 void RunSoftwareTimer(void){
 	if(counter_timer > 0){
@@ -34,9 +34,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 
 //==================HIGH LEVEL FUNCTION==================//
-void TM_Init(TIM_HandleTypeDef* htim){
+void TM_Init(TIM_HandleTypeDef* htim, uint16_t cycles){
 	stimer = htim;
 	counter_timer = MUL_timer;
+	TIME_CYCLE = cycles;
+
 	flag_timer = 0;
 
 	HAL_TIM_Base_Start_IT(stimer);

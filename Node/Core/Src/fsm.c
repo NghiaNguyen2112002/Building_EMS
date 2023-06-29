@@ -21,7 +21,7 @@ uint8_t ConvertToJsonString(void){
 
 //==================HIGH LEVEL FUNCTION==================//
 void FSM_Init(void){
-	mode = INIT;
+	mode = READ_DATA;
 }
 void FSM_SystemControl(void){
 	switch(mode){
@@ -31,8 +31,6 @@ void FSM_SystemControl(void){
 		mode = IDLING;
 		break;
 	case IDLING:
-//		if(_time_read_data < 5) mode = READ_DATA;
-
 		mode = READ_DATA;
 		break;
 	case READ_DATA:
@@ -45,13 +43,13 @@ void FSM_SystemControl(void){
 
 		_data.gas = IN_GetValue_Gas();
 		_data.smoke = IN_GetValue_Smoke();
-
-		mode = SEND_DATA;
-		break;
-	case SEND_DATA:
 		CLCD_PrintStringBuffer(0, 0, "SEND DATA");
 
-		ZB_SendMsg(json_str, ConvertToJsonString());
+				ZB_SendMsg(json_str, ConvertToJsonString());
+//		mode = SEND_DATA;
+		break;
+	case SEND_DATA:
+
 
 //		_time_read_data = TIME_READ_DATA;
 		mode = IDLING;

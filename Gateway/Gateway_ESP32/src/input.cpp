@@ -1,6 +1,6 @@
 #include "input.h"
 
-uint8_t BUTTON_PIN[NO_OF_BUTTONS] = { PIN_BT0 };
+uint16_t BUTTON_PIN[NO_OF_BUTTONS] = { PIN_BT0, PIN_SW_WAKEUP };
 bool Flag_for_button_press[NO_OF_BUTTONS];
 uint16_t Counter_button_press[NO_OF_BUTTONS];
 
@@ -35,4 +35,10 @@ bool IN_IsPressed_ms(uint8_t index, uint16_t duration){
 
 	//button is read every 50ms -> counter += 1 every 50ms if button is held
 	return Counter_button_press[index] >= (duration / 50);
+}
+
+bool IN_IsHeld(uint8_t index){
+  if(index >= NO_OF_BUTTONS) return 0;
+
+  return Counter_button_press[index] > 0;
 }
