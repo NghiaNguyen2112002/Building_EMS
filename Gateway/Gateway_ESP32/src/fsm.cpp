@@ -27,6 +27,7 @@ void DecodeDataJsonStr(char* json_str){
 	for(i = 0; (i < 100) && (token != NULL); i++){
 		if(i == 1) {
 			node_id = atoi(token);
+			// node_turn = node_id;
 			_data_node[node_id].node_id = node_id;
 			_data_node[node_id].is_connected = 1;
 		}
@@ -89,22 +90,64 @@ void FSM_LcdDisplay(void){
 		}
 		else if(_data_node[node_turn].is_connected){
 			_time_screen = TIME_SCREEN;
+			CLCD_PrintStringBuffer(0, 0, SCREEN_DHT_0);
+			CLCD_PrintStringBuffer(1, 0, SCREEN_DHT_1);
+			CLCD_PrintCharBuffer(1, LCD_INDEX_TEMP_SYMBOL, 0xDF);
 
-			mode_lcd = DISPLAY_DHT01;
+			CLCD_PrintCharBuffer(0, LCD_INDEX_NODE_ID, _data_node[node_turn].node_id + '0');
+
+			mode_lcd = DISPLAY_DHT;
 		}
 		else{
 			mode_lcd = TURN_NEXT_NODE;
 		}
 		break;
 
-	case DISPLAY_DHT01:
+	case DISPLAY_DHT:
+		CLCD_PrintFloatBuffer(1, LCD_INDEX_TEMP, _data_node[node_turn].temp);
+		CLCD_PrintFloatBuffer(1, LCD_INDEX_HUMI, _data_node[node_turn].humid);
 
-	break;
-	case DISPLAY_DHT12:
+		if(SystemMode() == SYS_CONNECT_WF){
+			CLCD_PrintStringBuffer(0, 0, SCREEN_WIFI_CONNECTING_0);
+			CLCD_PrintStringBuffer(1, 0, SCREEN_WIFI_CONNECTING_1);
 
+			mode_lcd = DISPLAY_CONNECTWF;
+		}
+		else if(SystemMode() == SYS_CONFIG_WF){
+			CLCD_PrintStringBuffer(0, 0, SCREEN_CONFIG_WIFI_0);
+			CLCD_PrintStringBuffer(1, 0, SCREEN_CONFIG_WIFI_1);
+
+			mode_lcd = DISPLAY_CONFIGWF;
+		}
+		else if(_time_screen < 5){
+			_time_screen = TIME_SCREEN;
+			CLCD_PrintStringBuffer(0, 0, SCREEN_GAS_SMOKE_0);
+			CLCD_PrintStringBuffer(1, 0, SCREEN_GAS_SMOKE_1);
+			CLCD_PrintCharBuffer(0, LCD_INDEX_NODE_ID, _data_node[node_turn].node_id + '0');
+
+			mode_lcd = DISPLAY_GAS_SMOKE;
+		}
 	break;
 	case DISPLAY_GAS_SMOKE:
+		CLCD_PrintFloatBuffer(1, LCD_INDEX_GAS, _data_node[node_turn].gas);
+		CLCD_PrintFloatBuffer(1, LCD_INDEX_SMOKE, _data_node[node_turn].smoke);
 
+
+		if(SystemMode() == SYS_CONNECT_WF){
+			CLCD_PrintStringBuffer(0, 0, SCREEN_WIFI_CONNECTING_0);
+			CLCD_PrintStringBuffer(1, 0, SCREEN_WIFI_CONNECTING_1);
+
+			mode_lcd = DISPLAY_CONNECTWF;
+		}
+		else if(SystemMode() == SYS_CONFIG_WF){
+			CLCD_PrintStringBuffer(0, 0, SCREEN_CONFIG_WIFI_0);
+			CLCD_PrintStringBuffer(1, 0, SCREEN_CONFIG_WIFI_1);
+
+			mode_lcd = DISPLAY_CONFIGWF;
+		}
+		else if(_time_screen < 5){
+			mode_lcd = TURN_NEXT_NODE;
+		}
 	break;
 	case TURN_NEXT_NODE:
 
@@ -251,7 +294,7 @@ void FSM_SystemControl(void){
 			// Serial.println("Received: ");
 			// Serial.println((char*)ZB_GetMsg().c_str());
 
-			_time_out_sleep = 500;
+			_time_out_sleep = TIME_OUT_SLEEP;
 
 			DecodeDataJsonStr((char*)ZB_GetMsg().c_str());
 

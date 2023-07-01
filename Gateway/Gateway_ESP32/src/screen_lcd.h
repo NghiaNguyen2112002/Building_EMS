@@ -22,6 +22,12 @@
 #define SCREEN_WIFI_CONNECTING_1        "                "
 
 //==================INDEX DISPLAY ON SCREEN==================//
+#define LCD_INDEX_NODE_ID               10
+#define LCD_INDEX_TEMP                  2
+#define LCD_INDEX_HUMI                  11
+#define LCD_INDEX_GAS                   3
+#define LCD_INDEX_SMOKE                 12
+#define LCD_INDEX_TEMP_SYMBOL           6
 
 
 #endif /* INC_SCREEN_LCD_H_ */

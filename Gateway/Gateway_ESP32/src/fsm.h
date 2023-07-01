@@ -17,8 +17,7 @@
 //==================MODE FSM LCD DISPLAY==================//
 #define INIT						0
 #define READY_DISPLAY               1
-#define DISPLAY_DHT01               2
-#define DISPLAY_DHT12               3
+#define DISPLAY_DHT                 2
 #define DISPLAY_GAS_SMOKE           4
 #define DISPLAY_CONFIGWF            5
 #define DISPLAY_CONNECTWF           6
@@ -41,6 +40,9 @@
 //==================TIME==================//
 #define TIME_SCREEN						500
 #define TIME_RECONNECT                  100             //reconnect wifi, server every 1s if not connected
+#define TIME_OUT_SLEEP                  1000
+
+
 //==================MSG FROM ESP==================//
 #define ONRELAY							"ONRELAY"
 #define OFFRELAY						"OFFRELAY"
