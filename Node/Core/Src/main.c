@@ -107,26 +107,25 @@ int main(void)
   MX_I2C1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-//  HAL_TIM_Base_Start_IT(&htim2);
-//  HAL_TIM_Base_Start(&htim3);
 
-//  TM_Init(&htim2, 1000);
-//  TM_SetTime_ms(5000);
+
+  HAL_TIM_Base_Start_IT(&htim2);
+  HAL_TIM_Base_Start(&htim3);
+
+  TM_Init(&htim2, 1000);
+  TM_SetTime_ms(1000);
 
 //  IN_Init(&hadc1);
-//
-//
-//  DHT_Init(&_dht, DHT_GPIO_Port, DHT_Pin, &htim3);
-//
-//  ZB_Init(&huart1);
-//
-//  CLCD_Init(&hi2c1, 0x27, 2, 16);
-//
-//  FSM_Init();
 
-  //	  Config for sleep mode
-  	  HAL_SuspendTick();	//stop systick
-  	  HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
+
+  DHT_Init(&_dht, DHT_GPIO_Port, DHT_Pin, &htim3);
+
+  ZB_Init(&huart1);
+
+  CLCD_Init(&hi2c1, 0x27, 2, 16);
+
+  FSM_Init();
+
 
   /* USER CODE END 2 */
 
@@ -134,38 +133,24 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_ResumeTick();
+//	  if(TM_IsFlag()){
+		HAL_SuspendTick();
+		HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
+		HAL_ResumeTick();
 
-	  if(TM_IsFlag()){
-		  CLCD_ClearBuffer();
-
-//		  DHT_Read(&_dht0);
-//		  DHT_Read(&_dht1);
-//
-//		  CLCD_PrintFloatBuffer(0, 0, DHT_GetHumi(&_dht0));
-//		  CLCD_PrintFloatBuffer(1, 0, DHT_GetTemp(&_dht0));
-//
-//		  CLCD_PrintFloatBuffer(0, 8, DHT_GetHumi(&_dht1));
-//		  CLCD_PrintFloatBuffer(1, 8, DHT_GetTemp(&_dht1));
-
-//		  x = DHT_GetHumi(&_dht0);
-
-//		  CLCD_PrintNumBuffer(0, 0, IN_GetValue_MP2());
-//		  CLCD_PrintNumBuffer(1, 0, IN_GetValue_MQ2());
+		  if(_time_read_data >= 1) _time_read_data -= 1;
 
 		  FSM_SystemControl();
 
 		  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 
+
+		  CLCD_PrintNumBuffer(1, 0, _time_read_data);
 		  CLCD_DisplayScreen();
 
+//	  }
 
 
-	  }
-
-//	  Config for sleep mode
-	  HAL_SuspendTick();	//stop systick
-	  HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
 
 
 

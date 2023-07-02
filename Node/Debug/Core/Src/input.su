@@ -1,3 +1,2 @@
-../Core/Src/input.c:15:6:IN_Init	16	static
 ../Core/Src/input.c:22:10:IN_GetValue_Gas	4	static
 ../Core/Src/input.c:26:10:IN_GetValue_Smoke	4	static

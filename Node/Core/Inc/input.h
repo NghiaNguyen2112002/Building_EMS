@@ -13,7 +13,7 @@
 #include "main.h"
 
 
-void IN_Init(ADC_HandleTypeDef* hadc);
+//void IN_Init(ADC_HandleTypeDef* hadc);
 //void IN_ReadADC(void);
 uint16_t IN_GetValue_Gas(void);
 uint16_t IN_GetValue_Smoke(void);

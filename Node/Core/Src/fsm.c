@@ -12,7 +12,7 @@ char json_str[200];
 
 
 uint8_t ConvertToJsonString(void){
-	return sprintf(json_str, "{\"ID\":%u,\"TEMP\":%0.1f,\"HUMI\":%0.1f,"
+	return sprintf(json_str, "!wkp#!{\"ID\":%u,\"TEMP\":%0.1f,\"HUMI\":%0.1f,"
 										"\"GAS\":%u,\"SMOKE\":%u}#",
 										NODE_ID, _data.temp, _data.humid,
 										_data.gas, _data.smoke);
@@ -21,38 +21,42 @@ uint8_t ConvertToJsonString(void){
 
 //==================HIGH LEVEL FUNCTION==================//
 void FSM_Init(void){
-	mode = READ_DATA;
+	mode = INIT;
 }
 void FSM_SystemControl(void){
 	switch(mode){
 	case INIT:
 
-//		_time_read_data = TIME_READ_DATA;
-		mode = IDLING;
+		_time_read_data = TIME_READ_DATA;
+
+		mode = SYS_WAKEUP;
 		break;
-	case IDLING:
-		mode = READ_DATA;
+	case SYS_SLEEP:
+
+		CLCD_PrintStringBuffer(0, 0, "SLEEP ");
+
+
+
+		mode = SYS_WAKEUP;
 		break;
-	case READ_DATA:
-		CLCD_PrintStringBuffer(0, 0, "READ DATA");
+	case SYS_WAKEUP:
 
-		DHT_Read(&_dht);
+		CLCD_PrintStringBuffer(0, 0, "WAKEUP");
+		if(_time_read_data == 0){
+			_time_read_data = TIME_READ_DATA;
 
-		_data.temp = DHT_GetTemp(&_dht);
-		_data.humid = DHT_GetHumi(&_dht);
+			DHT_Read(&_dht);
 
-		_data.gas = IN_GetValue_Gas();
-		_data.smoke = IN_GetValue_Smoke();
-		CLCD_PrintStringBuffer(0, 0, "SEND DATA");
+			_data.temp = DHT_GetTemp(&_dht);
+			_data.humid = DHT_GetHumi(&_dht);
 
-				ZB_SendMsg(json_str, ConvertToJsonString());
-//		mode = SEND_DATA;
-		break;
-	case SEND_DATA:
+			_data.gas = IN_GetValue_Gas();
+			_data.smoke = IN_GetValue_Smoke();
+			ZB_SendMsg(json_str, ConvertToJsonString());
+		}
 
 
-//		_time_read_data = TIME_READ_DATA;
-		mode = IDLING;
+		mode = SYS_SLEEP;
 		break;
 	default:
 		mode = INIT;

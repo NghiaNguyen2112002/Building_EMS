@@ -22,13 +22,12 @@
 
 //==================MODE FSM SYSTEM CONTROL==================//
 #define INIT						0
-#define IDLING						1
-#define READ_DATA					2
-#define SEND_DATA					3
+#define SYS_SLEEP					1
+#define SYS_WAKEUP					2
 
 
 //==================TIME==================//
-#define TIME_READ_DATA					1000
+#define TIME_READ_DATA					5			//readdata every 5s
 
 
 void FSM_Init(void);
