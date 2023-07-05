@@ -27,7 +27,7 @@
 
 
 //==================TIME==================//
-#define TIME_READ_DATA					5			//readdata every 5s
+#define TIME_READ_DATA					30			//readdata every 30s
 
 
 void FSM_Init(void);

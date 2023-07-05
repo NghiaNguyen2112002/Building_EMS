@@ -129,8 +129,8 @@ void FSM_LcdDisplay(void){
 		}
 	break;
 	case DISPLAY_GAS_SMOKE:
-		CLCD_PrintFloatBuffer(1, LCD_INDEX_GAS, _data_node[node_turn].gas);
-		CLCD_PrintFloatBuffer(1, LCD_INDEX_SMOKE, _data_node[node_turn].smoke);
+		CLCD_PrintNumBuffer(1, LCD_INDEX_GAS, _data_node[node_turn].gas);
+		CLCD_PrintNumBuffer(1, LCD_INDEX_SMOKE, _data_node[node_turn].smoke);
 
 
 		if(SystemMode() == SYS_CONNECT_WF){
@@ -328,9 +328,7 @@ void FSM_SystemControl(void){
 		break;
 
 	case SYS_SLEEP:
-		
-		// Serial.println(Serial.readStringUntil('#'));
-				
+						
 		Serial.println("Sleep");
 		CLCD_TurnBackLight(0);
 		CLCD_DisplayScreen();

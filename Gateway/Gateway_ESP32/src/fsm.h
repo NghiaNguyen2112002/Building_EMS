@@ -23,12 +23,6 @@
 #define DISPLAY_CONNECTWF           6
 #define TURN_NEXT_NODE              7
 
-//==================MODE FSM DATA PROCESSING==================//
-//#define INIT						0
-#define READ_DATA					1
-#define IDLING						2
-#define SEND_DATA					3
-
 //==================MODE FSM SYSTEM CONTROL==================//
 //#define INIT						0
 #define SYS_CONNECT_WF				1
@@ -38,8 +32,8 @@
 #define SYS_CONNECT_SV              5
 
 //==================TIME==================//
-#define TIME_SCREEN						500
-#define TIME_RECONNECT                  100             //reconnect wifi, server every 1s if not connected
+#define TIME_SCREEN						200
+#define TIME_RECONNECT                  500             //reconnect wifi, server every 5s if not connected
 #define TIME_OUT_SLEEP                  1000
 
 

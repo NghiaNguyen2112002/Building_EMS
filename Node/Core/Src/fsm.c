@@ -31,14 +31,6 @@ void FSM_SystemControl(void){
 
 		mode = SYS_WAKEUP;
 		break;
-	case SYS_SLEEP:
-
-		CLCD_PrintStringBuffer(0, 0, "SLEEP ");
-
-
-
-		mode = SYS_WAKEUP;
-		break;
 	case SYS_WAKEUP:
 
 		CLCD_PrintStringBuffer(0, 0, "WAKEUP");
@@ -52,11 +44,23 @@ void FSM_SystemControl(void){
 
 			_data.gas = IN_GetValue_Gas();
 			_data.smoke = IN_GetValue_Smoke();
+
+			ZB_SendMsg("wkp", 3);
+			HAL_Delay(100);
 			ZB_SendMsg(json_str, ConvertToJsonString());
 		}
-
-
 		mode = SYS_SLEEP;
+		break;
+
+	case SYS_SLEEP:
+
+		CLCD_PrintStringBuffer(0, 0, "SLEEP ");
+
+		HAL_SuspendTick();
+		HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
+		HAL_ResumeTick();
+
+		mode = SYS_WAKEUP;
 		break;
 	default:
 		mode = INIT;

@@ -29,14 +29,12 @@ void setup() {
 
   EEPROM.begin(512);
   IN_Init();
-  ZB_Init(PIN_ZIGBEE_TX, PIN_ZIGBEE_RX);
+  ZB_Init(PIN_ZIGBEE_RX, PIN_ZIGBEE_TX);
   WF_Init();
   SV_Init();
   FSM_Init();
   CLCD_Init(PIN_SDA, PIN_SCL, 0x27, 2, 16);
   
-
-  // esp_sleep_enable_wifi_wakeup();
 
   gpio_wakeup_enable(PIN_DEBUG_RX, GPIO_INTR_LOW_LEVEL);
   gpio_wakeup_enable(PIN_ZIGBEE_RX, GPIO_INTR_LOW_LEVEL);  
