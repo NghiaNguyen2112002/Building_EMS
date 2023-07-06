@@ -32,9 +32,9 @@ void setup() {
   ZB_Init(PIN_ZIGBEE_RX, PIN_ZIGBEE_TX);
   WF_Init();
   SV_Init();
-  FSM_Init();
   CLCD_Init(PIN_SDA, PIN_SCL, 0x27, 2, 16);
   
+  FSM_Init();
 
   gpio_wakeup_enable(PIN_DEBUG_RX, GPIO_INTR_LOW_LEVEL);
   gpio_wakeup_enable(PIN_ZIGBEE_RX, GPIO_INTR_LOW_LEVEL);  
@@ -56,7 +56,7 @@ void loop() {
 
     IN_ReadButton();
     
-    // program excecuted every 50ms
+    // program excecuted every 50ms        
     if(_time_screen >= 5) _time_screen -= 5;
     if(_time_out_sleep >= 5) _time_out_sleep -= 5;
     if(_time_reconnect >= 5) _time_reconnect -= 5;

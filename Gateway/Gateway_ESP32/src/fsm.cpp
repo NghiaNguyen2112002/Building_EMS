@@ -34,7 +34,7 @@ void DecodeDataJsonStr(char* json_str){
 		else if(i == 3) _data_node[node_id].temp = atoff(token);
 		else if(i == 5) _data_node[node_id].humid = atoff(token);
 		else if(i == 7) _data_node[node_id].gas = atoi(token);
-		else if(i == 7) _data_node[node_id].smoke = atoi(token);
+		else if(i == 9) _data_node[node_id].smoke = atoi(token);
 
 		token = strtok(NULL, ":,{}");
 	}
@@ -59,9 +59,6 @@ void FSM_LcdDisplay(void){
 	switch(mode_lcd){
 	case INIT:
 
-		CLCD_CreateChar(0, icon_temp);
-		CLCD_CreateChar(1, icon_humi);
-
 		CLCD_PrintStringBuffer(0, 0, SCREEN_INIT_0);
 		CLCD_PrintStringBuffer(1, 0, SCREEN_INIT_1);
 
@@ -72,7 +69,7 @@ void FSM_LcdDisplay(void){
 		}
 		break;
 	case READY_DISPLAY:
-
+		
 		CLCD_PrintCharBuffer(1, 12 + (_counter_time_elapsed/10) % 4, '.');
 		if((_counter_time_elapsed/10) % 4 == 3) CLCD_PrintStringBuffer(1, 0, SCREEN_READY_DISPLAY_1);
 
@@ -167,7 +164,7 @@ void FSM_LcdDisplay(void){
 	case DISPLAY_CONNECTWF:
 		//every 500ms print a '.'
 		CLCD_PrintCharBuffer(1, 6 + (_counter_time_elapsed/10) % 5, '.');
-
+					
 		if((_counter_time_elapsed/10) % 5 == 4) CLCD_PrintStringBuffer(1, 0, SCREEN_WIFI_CONNECTING_1);
 
 		if(SystemMode() == SYS_CONFIG_WF){
@@ -243,6 +240,7 @@ void FSM_SystemControl(void){
 			_time_reconnect = TIME_RECONNECT;
 			SV_Connect();
 		}
+
 		if(SV_IsConnected()){
 			Serial.println("Connect Server successful!");
 			mode_sys = SYS_PROCESS_DATA;
@@ -332,6 +330,7 @@ void FSM_SystemControl(void){
 		Serial.println("Sleep");
 		CLCD_TurnBackLight(0);
 		CLCD_DisplayScreen();
+
 		esp_light_sleep_start();
 		mode_sys = INIT;
 		

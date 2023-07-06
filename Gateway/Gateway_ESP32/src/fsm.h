@@ -37,19 +37,6 @@
 #define TIME_OUT_SLEEP                  1000
 
 
-//==================MSG FROM ESP==================//
-#define ONRELAY							"ONRELAY"
-#define OFFRELAY						"OFFRELAY"
-#define CONFIG_WF_SUCCESS				"CONFIG_SUCCESS"
-#define CONNECT_WF_SUCCESS				"CONNECT_SUCCESS"
-#define DISCONNECT_WF					"DISCONNECT"
-
-
-//==================CMD TO ESP==================//
-#define CMD_CONNECT_WF					"CONNECT"
-#define CMD_CONFIG_WF					"CONFIG"
-#define CMD_TRANSMIT_DATA				"TRANSMIT"
-
 void FSM_Init(void);
 void FSM_LcdDisplay(void);
 void FSM_SystemControl(void);

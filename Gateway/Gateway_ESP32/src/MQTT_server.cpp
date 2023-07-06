@@ -24,7 +24,7 @@ void SV_Connect(void){
         Serial.println( "[DONE]" );
 
         // Subscribing channel
-        client.subscribe(CHANNEL_COMMAND);
+        client.subscribe(CHANNEL_COMMAND);  //MQTT
       }
       else {
         Serial.print( "[FAILED] [ rc = " );

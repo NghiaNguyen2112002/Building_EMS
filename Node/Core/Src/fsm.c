@@ -34,6 +34,7 @@ void FSM_SystemControl(void){
 	case SYS_WAKEUP:
 
 		CLCD_PrintStringBuffer(0, 0, "WAKEUP");
+
 		if(_time_read_data == 0){
 			_time_read_data = TIME_READ_DATA;
 
